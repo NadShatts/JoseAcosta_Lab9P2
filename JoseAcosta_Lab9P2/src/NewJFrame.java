@@ -111,13 +111,11 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(111, 111, 111)
-                            .addComponent(jLabel2))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(94, 94, 94)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jButton1)
-                                .addComponent(pb_progreso, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(pb_progreso, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(253, 253, 253)
                             .addComponent(jLabel3))
@@ -217,7 +215,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
 hiloBarra = new HiloBarra(pb_progreso);
-
         File fichero = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -227,19 +224,19 @@ hiloBarra = new HiloBarra(pb_progreso);
             FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
             jf.setFileFilter(filtro);
             int seleccion = jf.showOpenDialog(this);
-            if (seleccion == JFileChooser.APPROVE_OPTION) {
-                hiloBarra.start();
-                
+            if (seleccion == JFileChooser.APPROVE_OPTION) {   
                 fichero = jf.getSelectedFile();
                 fr = new FileReader(fichero);
                 br = new BufferedReader(fr);
                 String lineas;
                 ta_archivo.setText("");
-                while ((lineas = br.readLine()) != null) {
+                hiloBarra.start();
+                
+                while ((lineas = br.readLine()) != null) { 
                     ta_archivo.append(lineas);
                     ta_archivo.append("\n");
                 }
-            }
+            }         
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -250,53 +247,24 @@ hiloBarra = new HiloBarra(pb_progreso);
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
        FileWriter fw = null;
        BufferedWriter bw = null;
-        
         try{
-            File archivo = null;
-            
+            File archivo = new File("./laboratorio.txt"); 
             fw = new FileWriter(archivo);
             bw = new BufferedWriter(fw);
             bw.write(ta_archivo.getText());
-            ta_archivo.setText("");
             bw.flush();
-            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");
-            
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente"); 
         }catch(Exception e){
             e.printStackTrace();
         }
-        /*JFileChooser jfc = new JFileChooser("./");
-        FileNameExtensionFilter filtro = 
-        new FileNameExtensionFilter("Archivos de Texto", "txt");
-         jfc.addChoosableFileFilter(filtro); 
-        int seleccion = jfc.showSaveDialog(this);        
-        FileWriter fw = null;
-        BufferedWriter bw = null;
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-             try { 
-                  File fichero=null;
-                if (jfc.getFileFilter().getDescription().equals("Archivos de Texto")) {
-                    fichero = new File(jfc.getSelectedFile().getPath()+".txt");
-                }else{
-                    fichero = jfc.getSelectedFile();
-                }                             
-                fw = new FileWriter(fichero);
-                bw = new BufferedWriter(fw);
-                bw.write(ta_1.getText());
-                ta_1.setText("");
-                bw.flush();         
-                JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");  
-                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                    bw.close();
-                    fw.close();
-                } catch (IOException ex) {
-           }                     
-        }//fin IF
-        */
         
+        try{
+            bw.close();
+            fw.close();
+        }catch(Exception e){
+            
+        }
+
     }//GEN-LAST:event_jButton2MouseClicked
 
     /**

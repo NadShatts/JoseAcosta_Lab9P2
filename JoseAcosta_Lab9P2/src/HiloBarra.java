@@ -58,7 +58,7 @@ public class HiloBarra extends Thread {
             }
             
             try {
-                Thread.sleep(0);
+                Thread.sleep(50);
             } catch (InterruptedException ex) {
             }
         }
