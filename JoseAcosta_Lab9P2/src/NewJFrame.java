@@ -1,16 +1,19 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author josed
@@ -25,11 +28,14 @@ public class NewJFrame extends javax.swing.JFrame {
         HiloHora hora = new HiloHora(lb_hora);
         Thread inicio = new Thread(hora);
         inicio.start();
-        
+
         HiloFecha fecha = new HiloFecha(lb_fecha);
         Thread inicio2 = new Thread(fecha);
         inicio2.start();
         
+        
+        
+
     }
 
     /**
@@ -46,7 +52,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        pb_progreso = new javax.swing.JProgressBar();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ta_archivo = new javax.swing.JTextArea();
@@ -76,7 +82,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Subiendo Archivo");
 
-        jProgressBar1.setString("100%");
+        pb_progreso.setString("0%");
+        pb_progreso.setStringPainted(true);
 
         jLabel3.setText("Archivo");
 
@@ -85,6 +92,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ta_archivo);
 
         jButton2.setText("Guardar");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -95,25 +107,24 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(225, 225, 225))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(253, 253, 253)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(240, 240, 240)
-                        .addComponent(jButton2)))
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(111, 111, 111)
+                            .addComponent(jLabel2))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(94, 94, 94)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton1)
+                                .addComponent(pb_progreso, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(253, 253, 253)
+                            .addComponent(jLabel3))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(251, 251, 251)
+                            .addComponent(jButton2))))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,14 +136,14 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pb_progreso, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(jButton2)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -141,7 +152,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Fecha de Hoy:");
 
-        lb_fecha.setText("00/00/00");
+        lb_fecha.setText("00/00/0000");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Hora Actual");
@@ -160,14 +171,13 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addComponent(jLabel4))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(73, 73, 73)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lb_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_hora)))
+                        .addComponent(lb_hora))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel5))))
+                            .addComponent(jLabel5)
+                            .addComponent(lb_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -206,24 +216,88 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-      
+hiloBarra = new HiloBarra(pb_progreso);
+
         File fichero = null;
         FileReader fr = null;
         BufferedReader br = null;
         ta_archivo.setText("");
-        try{
-        JFileChooser jf = new JFileChooser("./");
-        FileNameExtensionFilter filtro =new FileNameExtensionFilter("Archivos de texto", "txt");
-        jf.setFileFilter(filtro);
-        int seleccion = jf.showOpenDialog(this);
-        if(seleccion == JFileChooser.APPROVE_OPTION){
-            fichero = jf.getSelectedFile();
-            
+        try {
+            JFileChooser jf = new JFileChooser("./");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+            jf.setFileFilter(filtro);
+            int seleccion = jf.showOpenDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                hiloBarra.start();
+                
+                fichero = jf.getSelectedFile();
+                fr = new FileReader(fichero);
+                br = new BufferedReader(fr);
+                String lineas;
+                ta_archivo.setText("");
+                while ((lineas = br.readLine()) != null) {
+                    ta_archivo.append(lineas);
+                    ta_archivo.append("\n");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+       FileWriter fw = null;
+       BufferedWriter bw = null;
+        
+        try{
+            File archivo = null;
+            
+            fw = new FileWriter(archivo);
+            bw = new BufferedWriter(fw);
+            bw.write(ta_archivo.getText());
+            ta_archivo.setText("");
+            bw.flush();
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");
+            
         }catch(Exception e){
             e.printStackTrace();
         }
-    }//GEN-LAST:event_jButton1MouseClicked
+        /*JFileChooser jfc = new JFileChooser("./");
+        FileNameExtensionFilter filtro = 
+        new FileNameExtensionFilter("Archivos de Texto", "txt");
+         jfc.addChoosableFileFilter(filtro); 
+        int seleccion = jfc.showSaveDialog(this);        
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+             try { 
+                  File fichero=null;
+                if (jfc.getFileFilter().getDescription().equals("Archivos de Texto")) {
+                    fichero = new File(jfc.getSelectedFile().getPath()+".txt");
+                }else{
+                    fichero = jfc.getSelectedFile();
+                }                             
+                fw = new FileWriter(fichero);
+                bw = new BufferedWriter(fw);
+                bw.write(ta_1.getText());
+                ta_1.setText("");
+                bw.flush();         
+                JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");  
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                    bw.close();
+                    fw.close();
+                } catch (IOException ex) {
+           }                     
+        }//fin IF
+        */
+        
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -271,10 +345,11 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lb_fecha;
     private javax.swing.JLabel lb_hora;
+    private javax.swing.JProgressBar pb_progreso;
     private javax.swing.JTextArea ta_archivo;
     // End of variables declaration//GEN-END:variables
+HiloBarra hiloBarra;
 }

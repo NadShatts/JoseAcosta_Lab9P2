@@ -34,7 +34,7 @@ public class HiloFecha implements Runnable{
     public void run() {
         while(true){
             Date h = new Date();
-            DateFormat f = new SimpleDateFormat("dd/MM/yy");
+            DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
             fecha.setText(f.format(h));
             
             try {
