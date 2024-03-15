@@ -1,3 +1,11 @@
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -18,6 +26,10 @@ public class NewJFrame extends javax.swing.JFrame {
         Thread inicio = new Thread(hora);
         inicio.start();
         
+        HiloFecha fecha = new HiloFecha(lb_fecha);
+        Thread inicio2 = new Thread(fecha);
+        inicio2.start();
+        
     }
 
     /**
@@ -37,7 +49,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        ta_archivo = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -56,14 +68,21 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("Subir Archivo");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jLabel2.setText("Subiendo Archivo");
 
+        jProgressBar1.setString("100%");
+
         jLabel3.setText("Archivo");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        ta_archivo.setColumns(20);
+        ta_archivo.setRows(5);
+        jScrollPane1.setViewportView(ta_archivo);
 
         jButton2.setText("Guardar");
 
@@ -127,6 +146,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Hora Actual");
 
+        lb_hora.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lb_hora.setText("00:00:00");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -157,11 +177,11 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(77, 77, 77)
                 .addComponent(jLabel4)
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(lb_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addGap(41, 41, 41)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addComponent(lb_hora)
@@ -184,6 +204,26 @@ public class NewJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+      
+        File fichero = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        ta_archivo.setText("");
+        try{
+        JFileChooser jf = new JFileChooser("./");
+        FileNameExtensionFilter filtro =new FileNameExtensionFilter("Archivos de texto", "txt");
+        jf.setFileFilter(filtro);
+        int seleccion = jf.showOpenDialog(this);
+        if(seleccion == JFileChooser.APPROVE_OPTION){
+            fichero = jf.getSelectedFile();
+            
+        }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -233,8 +273,8 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lb_fecha;
     private javax.swing.JLabel lb_hora;
+    private javax.swing.JTextArea ta_archivo;
     // End of variables declaration//GEN-END:variables
 }

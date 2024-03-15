@@ -39,7 +39,7 @@ public class HiloHora implements Runnable {
         DateFormat x = new SimpleDateFormat("hh:mm:ss");
         hora.setText(x.format(h));
         try {
-            Thread.sleep(50);
+            Thread.sleep(60);
         } catch (InterruptedException ex) {
             }
         
