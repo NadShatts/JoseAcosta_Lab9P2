@@ -28,14 +28,11 @@ public class NewJFrame extends javax.swing.JFrame {
         HiloHora hora = new HiloHora(lb_hora);
         Thread inicio = new Thread(hora);
         inicio.start();
-
+        
         HiloFecha fecha = new HiloFecha(lb_fecha);
         Thread inicio2 = new Thread(fecha);
         inicio2.start();
         
-        
-        
-
     }
 
     /**
@@ -83,7 +80,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel2.setText("Subiendo Archivo");
 
         pb_progreso.setString("0%");
-        pb_progreso.setStringPainted(true);
 
         jLabel3.setText("Archivo");
 
@@ -107,21 +103,21 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(225, 225, 225))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(94, 94, 94)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(253, 253, 253)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(251, 251, 251)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jButton1)
                                 .addComponent(pb_progreso, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2)))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(253, 253, 253)
-                            .addComponent(jLabel3))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(251, 251, 251)
-                            .addComponent(jButton2))))
+                                .addComponent(jLabel2)))))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -137,9 +133,9 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(pb_progreso, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(35, 35, 35)
                 .addComponent(jButton2)
                 .addContainerGap(29, Short.MAX_VALUE))
         );
@@ -214,32 +210,47 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-hiloBarra = new HiloBarra(pb_progreso);
-        File fichero = null;
+                                           
+        File file = null;
         FileReader fr = null;
         BufferedReader br = null;
-        ta_archivo.setText("");
+        String texto = "";
         try {
-            JFileChooser jf = new JFileChooser("./");
-            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
-            jf.setFileFilter(filtro);
-            int seleccion = jf.showOpenDialog(this);
-            if (seleccion == JFileChooser.APPROVE_OPTION) {   
-                fichero = jf.getSelectedFile();
-                fr = new FileReader(fichero);
-                br = new BufferedReader(fr);
-                String lineas;
-                ta_archivo.setText("");
-                hiloBarra.start();
-                
-                while ((lineas = br.readLine()) != null) { 
-                    ta_archivo.append(lineas);
-                    ta_archivo.append("\n");
+            JFileChooser chooser = new JFileChooser("./");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto", "txt");
+            chooser.setFileFilter(filtro);
+            int seleccion = chooser.showOpenDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                file = chooser.getSelectedFile();
+                if(file == null){
+                    
+                }else{
+                    Archivos = file;
+                    fr = new FileReader(file);
+                    br = new BufferedReader(fr);
+                    String linea;
+                    ta_archivo.setText("");
+                    while ((linea = br.readLine()) != null) {
+                        texto += linea;
+                        texto += "\n";
+                    }
+                    
+                    HiloBarra barra = new HiloBarra(pb_progreso, texto, ta_archivo);
+        barra.start();
+                    try {
+            br.close();
+            fr.close();
+        } catch (IOException ex) {
+        }
                 }
-            }         
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        
+    
+
 
 
     }//GEN-LAST:event_jButton1MouseClicked
@@ -247,23 +258,26 @@ hiloBarra = new HiloBarra(pb_progreso);
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
        FileWriter fw = null;
        BufferedWriter bw = null;
-        try{
-            File archivo = new File("./laboratorio.txt"); 
+       if(ta_archivo.getText().isEmpty()){
+          JOptionPane.showMessageDialog(this, "No hay archivos para guardar");  
+       }else{
+           try{        
+            File archivo = new File("./laboratorio.txt");
             fw = new FileWriter(archivo);
             bw = new BufferedWriter(fw);
             bw.write(ta_archivo.getText());
             bw.flush();
-            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente"); 
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");     
         }catch(Exception e){
             e.printStackTrace();
         }
-        
         try{
             bw.close();
             fw.close();
         }catch(Exception e){
             
         }
+       }
 
     }//GEN-LAST:event_jButton2MouseClicked
 
@@ -320,4 +334,5 @@ hiloBarra = new HiloBarra(pb_progreso);
     private javax.swing.JTextArea ta_archivo;
     // End of variables declaration//GEN-END:variables
 HiloBarra hiloBarra;
+File Archivos;
 }
